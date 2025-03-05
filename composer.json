@@ -1,0 +1,41 @@
+{
+    "name": "jasonmccreary/laravel-additions",
+    "type": "library",
+    "description": "WIP",
+    "keywords": ["laravel"],
+    "license": "MIT",
+    "require": {
+        "php": "^8.2"
+    },
+    "require-dev": {
+        "laravel/pint": "~1.20.0",
+        "mockery/mockery": "^1.4.4",
+        "orchestra/testbench": "^10.0",
+        "phpunit/phpunit": "^11.5.3"
+    },
+    "config": {
+        "sort-packages": true
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "JMac\\Additions\\AdditionsServiceProvider"
+            ]
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "JMac\\Additions\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Tests\\": "tests/"
+        },
+        "exclude-from-classmap": [
+            "tests/fixtures/"
+        ]
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true
+}

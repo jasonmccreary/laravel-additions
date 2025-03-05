@@ -1,0 +1,101 @@
+name: Demo
+
+on:
+  schedule:
+    - cron: '0 0 * * *'
+  workflow_dispatch:
+    inputs:
+      ref:
+        description: The branch, tag or SHA to checkout.
+        required: false
+        default: ''
+
+jobs:
+  build:
+    name: P${{ matrix.php-version }} - L${{ matrix.laravel-version }} - ${{ matrix.os }}
+
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ALLOW_EMPTY_PASSWORD: yes
+          MYSQL_DATABASE: test
+        ports:
+          - 3306:3306
+        options: --health-cmd="mysqladmin ping" --health-interval=10s --health-timeout=5s --health-retries=3
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version: ['8.1', '8.2', '8.3', '8.4']
+        laravel-version: [10, 11, 12]
+        os: [ubuntu-latest]
+        exclude:
+          - laravel-version: 11
+            php-version: 8.1
+          - laravel-version: 12
+            php-version: 8.1
+
+    runs-on: ${{ matrix.os }}
+
+    continue-on-error: true
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.inputs.ref }}
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: dom, curl, libxml, mbstring, zip, pcntl, pdo, sqlite, pdo_sqlite, gd
+          coverage: none
+          tools: composer:v2
+          ini-values: memory_limit=-1
+
+      - name: Setup problem matchers for PHP
+        run: echo "::add-matcher::${{ runner.tool_cache }}/php.json"
+
+      - name: Setup problem matchers for PHPUnit
+        run: echo "::add-matcher::${{ runner.tool_cache }}/phpunit.json"
+
+      - name: Create a Laravel app
+        run: composer create-project --prefer-dist laravel/laravel:${{ matrix.laravel-version == '10' && '10.*' || matrix.laravel-version }} /home/runner/work/blueprint/laravel${{ matrix.laravel-version }}-example
+
+      - name: Link Blueprint repository
+        run: 'composer config repositories.local "{\"type\": \"path\", \"url\": \"/home/runner/work/blueprint/blueprint\"}" --file /home/runner/work/blueprint/laravel${{ matrix.laravel-version }}-example/composer.json'
+
+      - name: Determine composer cache directory
+        id: composer-cache
+        shell: bash
+        run: echo "dir=$(composer config cache-files-dir)" >> $GITHUB_OUTPUT
+
+      - name: Cache dependencies
+        uses: actions/cache@v4
+        with:
+          path: ${{ steps.composer-cache.outputs.dir }}
+          key: dependencies-os-${{ matrix.os }}-php-${{ matrix.php-version }}-laravel-${{ matrix.laravel-version }}-prefer-stable-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: dependencies-os-${{ matrix.os }}-php-${{ matrix.php-version }}-laravel-${{ matrix.laravel-version }}-prefer-stable-composer-
+
+      - name: Install dependencies
+        working-directory: /home/runner/work/blueprint/laravel${{ matrix.laravel-version }}-example
+        run: composer require --dev laravel-shift/blueprint @dev jasonmccreary/laravel-test-assertions
+
+      - name: Run Blueprint Demo
+        working-directory: /home/runner/work/blueprint/laravel${{ matrix.laravel-version }}-example
+        env:
+          DB_CONNECTION: mysql
+          DB_HOST: 127.0.0.1
+          DB_PORT: ${{ job.services.mysql.ports['3306'] }}
+          DB_DATABASE: test
+          DB_USERNAME: root
+          DB_PASSWORD: null
+        run: |
+          cp /home/runner/work/blueprint/blueprint/tests/fixtures/integration/TraceTest.php tests/Feature/TraceTest.php
+          php artisan migrate:refresh --force
+          php artisan blueprint:build /home/runner/work/blueprint/blueprint/tests/fixtures/drafts/readme-example.yaml
+          php artisan migrate
+          php artisan blueprint:trace
+          php artisan test
