@@ -10,7 +10,9 @@ if (! function_exists('status')) {
     function status($code = null)
     {
         if (! is_null($code)) {
-            // TODO: restrict 300 level status codes...
+            if ($code >= 300 && $code < 400) {
+                throw new \InvalidArgumentException('You can not use the status helper for redirection');
+            }
 
             return response()->noContent($code);
         }
