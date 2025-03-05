@@ -6,6 +6,8 @@
 
 This is a package for Laravel containing "additions" I have used within my Laravel applications over the years.
 
+This package is currently a WIP (work in progress).
+
 
 ## Requirements
 A Laravel application running Laravel 11 or higher. Not running a support version of Laravel, [upgrade with Shift](https://laravelshift.com). 
