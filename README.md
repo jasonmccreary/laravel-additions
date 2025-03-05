@@ -1,10 +1,8 @@
 <p align="right">
-    <a href="https://github.com/laravel-shift/blueprint/actions"><img src="https://github.com/laravel-shift/blueprint/workflows/Build/badge.svg" alt="Build Status"></a>
-    <a href="https://packagist.org/packages/laravel-shift/blueprint"><img src="https://poser.pugx.org/laravel-shift/blueprint/v/stable.svg" alt="Latest Stable Version"></a>
-    <a href="https://github.com/badges/poser/blob/master/LICENSE"><img src="https://poser.pugx.org/laravel-shift/blueprint/license.svg" alt="License"></a>
+    <a href="https://github.com/jasonmccreary/laravel-additions/actions"><img src="https://github.com/jasonmccreary/laravel-additions/workflows/Build/badge.svg" alt="Build Status"></a>
+    <a href="https://packagist.org/packages/jasonmccreary/laravel-additions"><img src="https://poser.pugx.org/jasonmccreary/laravel-additions/v/stable.svg" alt="Latest Stable Version"></a>
+    <a href="https://github.com/badges/poser/blob/master/LICENSE"><img src="https://poser.pugx.org/jasonmccreary/laravel-additions/license.svg" alt="License"></a>
 </p>
-
-![Blueprint](blueprint-logo.png)
 
 _Blueprint_ is an open-source tool for **rapidly generating multiple** Laravel components from a **single, human readable** definition.
 
@@ -19,7 +17,7 @@ Blueprint requires a Laravel application running a supported version of Laravel.
 You can install Blueprint via Composer using the following command:
 
 ```sh
-composer require -W --dev laravel-shift/blueprint
+composer require -W --dev jasonmccreary/laravel-additions
 ```
 
 Blueprint will automatically register itself using [package discovery](https://laravel.com/docs/packages#package-discovery).
@@ -90,3 +88,8 @@ Browse the [Blueprint Docs](https://blueprint.laravelshift.com/) for full detail
 Starting with version 2, Blueprint only generates code for supported versions of Laravel (currently Laravel 10.38 or higher). If you need to support older versions of Laravel, you may use version 1 or upgrade your application ([try using Shift](https://laravelshift.com)).
 
 Blueprint still follows [semantic versioning](https://semver.org/). However, it does so with respect to its grammar. Any changes to the grammar will increase its major version number. Otherwise, minor version number increases will contain new features. This includes generating code for future versions of Laravel.
+
+## TODO
+- `fallback` for Policies
+- "force create" for models
+- ???
