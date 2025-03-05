@@ -12,13 +12,11 @@ assignees: ''
 
 - Laravel Version: #.#.#
 - PHP Version: #.#.#
-- Blueprint Version: #.#.#
+- Package Version: #.#.#
 - Platform: Mac | Windows | Linux
 
 ### Issue:
 
-
-### draft.yaml:
-```yaml
-# PLEASE PASTE THE DRAFT FILE WHICH REPRODUCES THE ISSUE HERE...
+```
+# PLEASE PASTE YOUR CODE OR FULL STACKTRACE HERE...
 ```
