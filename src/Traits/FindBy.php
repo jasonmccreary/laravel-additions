@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Traits;
+namespace JMac\Additions\Traits;
 
 trait FindBy
 {

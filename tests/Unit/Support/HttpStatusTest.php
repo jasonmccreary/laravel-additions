@@ -3,9 +3,9 @@
 namespace Tests\Unit\Support;
 
 use JMac\Additions\Support\HttpStatus;
-use Orchestra\Testbench\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
+use Tests\TestCase;
 
 final class HttpStatusTest extends TestCase
 {
