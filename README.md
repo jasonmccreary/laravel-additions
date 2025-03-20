@@ -4,6 +4,7 @@
     <a href="https://github.com/badges/poser/blob/master/LICENSE"><img src="https://poser.pugx.org/jasonmccreary/laravel-additions/license.svg" alt="License"></a>
 </p>
 
+# Additions for Laravel
 This is a package for Laravel containing "additions" I have used within my Laravel applications over the years.
 
 This package is currently a WIP (work in progress).
@@ -26,4 +27,5 @@ Contributions to this project are welcome. You may open a Pull Request against t
 ## TODO
 - `fallback` for Policies
 - "force create" for models
+- `findBy*` for models
 - ???
