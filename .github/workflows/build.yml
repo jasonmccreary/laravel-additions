@@ -21,12 +21,8 @@ jobs:
         php-version: ['8.2', '8.3', '8.4']
         laravel-version: [11, 12]
         os: [ubuntu-latest, windows-latest, macos-latest]
-        stability: [prefer-lowest, prefer-stable]
-        experimental: [false]
 
     runs-on: ${{ matrix.os }}
-
-    continue-on-error: ${{ matrix.experimental }}
 
     steps:
       - name: Checkout code
@@ -55,13 +51,13 @@ jobs:
         uses: actions/cache@v4
         with:
           path: ${{ steps.composer-cache.outputs.dir }}
-          key: dependencies-os-${{ matrix.os }}-php-${{ matrix.php-version }}-laravel-${{ matrix.laravel-version }}-${{ matrix.stability }}-composer-${{ hashFiles('**/composer.lock') }}
-          restore-keys: dependencies-os-${{ matrix.os }}-php-${{ matrix.php-version }}-laravel-${{ matrix.laravel-version }}-${{ matrix.stability }}-composer-
+          key: dependencies-os-${{ matrix.os }}-php-${{ matrix.php-version }}-laravel-${{ matrix.laravel-version }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: dependencies-os-${{ matrix.os }}-php-${{ matrix.php-version }}-laravel-${{ matrix.laravel-version }}-composer-
 
       - name: Install dependencies
         run: |
           composer require laravel/framework:${{ matrix.laravel-version }}.* --no-interaction --no-update
-          composer update --${{ matrix.stability }} --prefer-dist --no-interaction
+          composer update --prefer-dist --no-interaction
 
       - name: Run tests
         run: vendor/bin/phpunit
