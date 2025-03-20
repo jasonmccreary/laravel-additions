@@ -76,4 +76,19 @@ final class FindByTest extends TestCase
         $this->assertSame(['title' => 'Title 1'], $result->first()->toArray());
         $this->assertSame(['title' => 'Title 2'], $result->last()->toArray());
     }
+
+    #[Test]
+    public function it_returns_null_when_column_does_not_exist(): void
+    {
+        $this->assertNull(Post::findByUnknownColumn('uh oh'));
+    }
+
+    #[Test]
+    public function it_returns_empty_collect_when_column_does_not_exist(): void
+    {
+        $result = Post::findByUnknownColumn(['no', 'nope']);
+
+        $this->assertInstanceOf(\Illuminate\Database\Eloquent\Collection::class, $result);
+        $this->assertTrue($result->isEmpty());
+    }
 }
