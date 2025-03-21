@@ -5,7 +5,7 @@
 </p>
 
 # Additions for Laravel
-This is package contains Laravel "additions" I have used within my Laravel applications over the years.
+This package contains Laravel "additions" I have used within my Laravel applications over the years.
 
 While some additions are available, this package is still a WIP (work in progress).
 
