@@ -22,13 +22,6 @@ composer require -W jasonmccreary/laravel-additions
 ```
 
 
-## TODO
-- [x] `status` helper
-- [x] `findBy*` for models
-- [ ] `fallback` for policies
-- [ ] "force create" for models
-
-
 ## Documentation
 A simple description and code sample is provided for each available addition. Many of these additions have been attempted in the Laravel framework. For a full backstory, you may review their original PR.
 
@@ -80,6 +73,14 @@ class Post extends Model
     // ...
 }
 ```
+
+
+## TODO
+- [x] ~~`status` helper~~
+- [x] ~~`findBy*` for models~~
+- [ ] `fallback` for policies
+- [ ] "force create" for models
+
 
 ## Contributing
 Contributions to this project are welcome. You may open a Pull Request against the `main` branch. Please ensure you write a clear description (ideally with code samples) and all workflows are passing.
