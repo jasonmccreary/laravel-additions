@@ -11,7 +11,7 @@ While some additions are available, this package is still a WIP (work in progres
 
 
 ## Requirements
-A Laravel application running Laravel 11 or higher. Not running a support version of Laravel? [Upgrade with Shift](https://laravelshift.com). 
+A Laravel application running Laravel 11 or higher. _Not running a stable version of Laravel?_ [Upgrade with Shift](https://laravelshift.com). 
 
 
 ## Installation
