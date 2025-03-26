@@ -56,6 +56,26 @@ Post::findByAuthorId([1, 3, 5]);
 Post::findByAuthorId(5, ['title']);
 ```
 
+To use these dynamic `findBy*` methods, simply add the `FindBy` trait to your model class.
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use JMac\Additions\Traits\FindBy;
+
+class Post extends Model
+{
+    use FindBy;
+    
+    // ...
+}
+```
+
+---
+
 ### `SafeSave` for models
 This package includes a `SafeSave` trait (attempted in [#50190](https://github.com/laravel/framework/pull/50190)) which may be added to your Eloquent models to save data directly from "safe" input without doing the fillable/guarded dance. More technically, you may pass the Eloquent `create` or `update` methods `ValidatedInput` without triggering a `MassAssignment` exception, regardless of the values set in the model `$fillable` or `$guarded` properties.
 
