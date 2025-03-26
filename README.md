@@ -74,12 +74,47 @@ class Post extends Model
 }
 ```
 
+---
+
+### `SafeSave` for models
+This package includes a `SafeSave` trait (attempted in [#50190](https://github.com/laravel/framework/pull/50190)) which may be added to your Eloquent models to save data directly from "safe" input without doing the fillable/guarded dance. More technically, you may pass the Eloquent `create` or `update` methods `ValidatedInput` without triggering a `MassAssignment` exception, regardless of the values set in the model `$fillable` or `$guarded` properties.
+
+`ValidatedInput` objects are readily available from calling the `safe` method on a `FormRequest`. This data has been validated, and, as such, is ready to save to the database.
+
+```php
+public function store(UserCreateRequest $request)
+{
+     $user = User::create($request->safe());
+
+     return redirect('user.show', $user);
+}
+```
+
+While this is the intended use case, you may, of course, create your own `ValidatedInput` object directly. To use this behavior, simply add the `SafeSave` trait to your model class.
+
+```php
+<?php
+
+namespace App\Models;
+
+use Illuminate\Database\Eloquent\Model;
+use JMac\Additions\Traits\SafeSave;
+
+class Post extends Model
+{
+    use SafeSave;
+    
+    // ...
+}
+```
+
 
 ## TODO
 - [x] ~~`status` helper~~
 - [x] ~~`findBy*` for models~~
+- [x] ~~"safe objects" for models~~
 - [ ] `fallback` for policies
-- [ ] "force create" for models
+
 
 
 ## Contributing
