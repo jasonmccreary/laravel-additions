@@ -5,7 +5,7 @@
 </p>
 
 # Additions for Laravel
-This package contains "additions" to Laravel I have used within my Laravel applications over the years. All of them are aimed to improve the developer experience and code readability. Many of these additions have been attempted in the Laravel framework, but not yet merged.
+This package contains "additions" to Laravel I have used within my Laravel applications over the years. All aim to improve the developer experience and code readability. Many of these additions have been attempted in the Laravel framework, but not yet merged.
 
 
 ## Requirements
@@ -117,6 +117,8 @@ When using `WithFallback` you may add a `fallback` method to your policy class. 
 - The authenticated user instance
 - The model instance, if the policy is for a model
 - An array of any additional arguments passed
+
+Like any other policy method, `fallback` should return `true` if authorized, `false` if not authorized, or `null` to defer authorization.
 
 **Note:** Due to the dynamic nature of this method, it does not support [guest users](https://laravel.com/docs/12.x/authorization#guest-users). If you require guest user support, you may implement the specific policy method.
 
