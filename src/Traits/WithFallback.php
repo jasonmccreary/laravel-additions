@@ -2,27 +2,27 @@
 
 namespace JMac\Additions\Traits;
 
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
+
 trait WithFallback
 {
-    // Gate::update(User $user, Post $post)
-    // $name = 'update'
-    // $arguments = [$user, $post]
-
-
     public function __call($name, $arguments)
     {
-        if (!method_exists($this, 'fallback')) {
+        if (! method_exists($this, 'fallback')) {
             throw new \RuntimeException('You must define a fallback method when using the WithFallback trait');
         }
 
-        // TODO: determine "shifting" arguments to `fallback`
-        // use cases:
-        //   - "resourceful" methods with user and model
-        //   - "resourceful" methods without model
-        //   - with additional arguments
-        //   - non-"resourceful" methods with additional arguments
-        dump($arguments);
+        $name = Str::snake($name, '-');
+        $user = array_shift($arguments);
+        $model = null;
 
-        return $this->fallback($name, $user, $model, ...$arguments);
+        if (isset($arguments[0])
+            && $arguments[0] instanceof Model
+            && str_starts_with(class_basename(self::class), class_basename($arguments[0]::class))) {
+            $model = array_shift($arguments);
+        }
+
+        return $this->fallback($name, $user, $model, $arguments);
     }
 }
