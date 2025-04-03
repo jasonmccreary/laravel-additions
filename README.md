@@ -5,9 +5,7 @@
 </p>
 
 # Additions for Laravel
-This package contains Laravel "additions" I have used within my Laravel applications over the years.
-
-While some additions are available, this package is still a WIP (work in progress).
+This package contains "additions" to Laravel I have used within my Laravel applications over the years. All of them are aimed to improve the developer experience and code readability. Many of these additions have been attempted in the Laravel framework, but not yet merged.
 
 
 ## Requirements
@@ -23,7 +21,7 @@ composer require -W jasonmccreary/laravel-additions
 
 
 ## Documentation
-A simple description and code sample is provided for each available addition. Many of these additions have been attempted in the Laravel framework. For a full backstory, you may review their original PR.
+A brief description and code sample is provided for each available addition. For a full backstory, you may review their original PR.
 
 ---
 
@@ -108,13 +106,40 @@ class Post extends Model
 }
 ```
 
+---
 
-## TODO
-- [x] ~~`status` helper~~
-- [x] ~~`findBy*` for models~~
-- [x] ~~"safe objects" for models~~
-- [ ] `fallback` for policies
+### `WithFallback` for policies
+This introduces a `WithFallback` trait (attempted in [#54495](https://github.com/laravel/framework/pull/50190)) which you may add to your model policies to streamline the repeated logic often found within these classes.
 
+When using `WithFallback` you may add a `fallback` method to your policy class. This method will be called when the policy method is not found. The `fallback` method will receive the following arguments:
+
+- The _kebab case_ name of the ability
+- The authenticated user instance
+- The model instance, if the policy is for a model
+- An array of any additional arguments passed
+
+**Note:** Due to the dynamic nature of this method, it does not support [guest users](https://laravel.com/docs/12.x/authorization#guest-users). If you require guest user support, you may implement the specific policy method.
+
+To use this behavior, simply add the `WithFallback` trait to your model class.
+
+```php
+<?php
+
+namespace App\Policies;
+
+use Illuminate\Database\Eloquent\Model;
+use JMac\Additions\Traits\WithFallback;
+
+class PostPolicy
+{
+    use WithFallback;
+    
+    public function fallback(string $ability, User $user, ?Post $post, array $arguments): ?bool
+    {
+          return null;
+    }
+}
+```
 
 
 ## Contributing
