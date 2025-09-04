@@ -4,7 +4,7 @@ namespace JMac\Additions\Traits;
 
 trait FindBy
 {
-    public function __call(string $name, array $arguments)
+    public function __call($name, $arguments)
     {
         if (! str_starts_with(strtolower($name), 'findby')) {
             return $this->__call($name, $arguments);
