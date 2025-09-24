@@ -4,6 +4,7 @@ namespace JMac\Additions;
 
 use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
+use JMac\Additions\Support\MigrationCreator;
 
 class AdditionsServiceProvider extends ServiceProvider implements DeferrableProvider
 {
@@ -20,7 +21,9 @@ class AdditionsServiceProvider extends ServiceProvider implements DeferrableProv
      */
     public function register(): void
     {
-        //
+        $this->app->singleton('migration.creator', function ($app) {
+            return new MigrationCreator($app['files'], $app->basePath('stubs'));
+        });
     }
 
     /**
@@ -28,6 +31,6 @@ class AdditionsServiceProvider extends ServiceProvider implements DeferrableProv
      */
     public function provides(): array
     {
-        return [];
+        return ['migration.creator'];
     }
 }
