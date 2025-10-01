@@ -2,61 +2,75 @@
 
 namespace Tests\Feature\Support;
 
-use Illuminate\Foundation\Testing\RefreshDatabase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 use Tests\TestCase;
-use Workbench\App\Models\Post;
 
+/**
+ * @see \JMac\Additions\Support\MigrationCreator
+ */
 final class MigrationCreatorTest extends TestCase
 {
-    use RefreshDatabase;
-
     #[Test]
     #[DataProvider('defaultMigrations')]
     public function it_defers_to_core_for_create_migrations(string $name, ?string $table, bool $create): void
     {
         $subject = resolve('migration.creator');
 
-        dump('here');
+        $path = $subject->create($name, database_path('migrations'), $table, $create);
 
-        $subject->create($name, database_path('migrations'), $table, $create);
+        $this->assertFileEquals($this->migrationFixture($name), $path);
     }
 
     #[Test]
     #[DataProvider('unknownMigrations')]
-    public function it_defers_to_core_for_unknown_migrations(): void
+    public function it_defers_to_core_for_unknown_migrations(string $name, ?string $table, bool $create): void
     {
-        $this->assertNull(Post::findByTitle('does not exist'));
+        $this->markTestIncomplete();
+
+        $subject = resolve('migration.creator');
+
+        $path = $subject->create($name, database_path('migrations'), $table, $create);
+
+        $this->assertFileEquals($this->migrationFixture($name), $path);
     }
 
     #[Test]
     #[DataProvider('guessableMigrations')]
-    public function it_makes_additional_guessable_migrations(): void
+    public function it_makes_additional_guessable_migrations(string $name, ?string $table, bool $create): void
     {
-        $this->assertNull(Post::findByTitle('does not exist'));
+        $this->markTestIncomplete();
+
+        $subject = resolve('migration.creator');
+
+        $path = $subject->create($name, database_path('migrations'), $table, $create);
+
+        $this->assertFileEquals($this->migrationFixture($name), $path);
     }
 
     private function migrationFixture(string $name): string
     {
-        return $this->basePath().'fixtures/migrations/'.$name.'.php';
+        return $this->basePath('fixtures/migrations/'.$name.'.php');
     }
 
     public static function defaultMigrations(): array
     {
         return [
-            ['create_posts_table', 'posts', true],
-            //            ['create_password_resets', 'password_resets', true],
+            ['create_comments_table', 'comments', true],
         ];
     }
 
     public static function guessableMigrations(): array
     {
-        return [];
+        return [
+            [],
+        ];
     }
 
     public static function unknownMigrations(): array
     {
-        return [];
+        return [
+            [],
+        ];
     }
 }

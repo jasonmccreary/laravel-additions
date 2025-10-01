@@ -18,6 +18,6 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
 
     public function basePath($path = ''): string
     {
-        return __DIR__.'/../'.$path;
+        return __DIR__.'/'.$path;
     }
 }
