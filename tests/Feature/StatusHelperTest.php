@@ -7,7 +7,7 @@ use Orchestra\Testbench\TestCase;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Test;
 
-final class SupportHelperTest extends TestCase
+final class StatusHelperTest extends TestCase
 {
     #[Test]
     public function it_returns_instance_when_called_with_no_arguments(): void

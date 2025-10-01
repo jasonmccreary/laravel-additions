@@ -15,4 +15,9 @@ abstract class TestCase extends \Orchestra\Testbench\TestCase
             AdditionsServiceProvider::class,
         ];
     }
+
+    public function basePath($path = ''): string
+    {
+        return __DIR__.'/../'.$path;
+    }
 }
