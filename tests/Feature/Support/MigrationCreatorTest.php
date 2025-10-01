@@ -26,8 +26,6 @@ final class MigrationCreatorTest extends TestCase
     #[DataProvider('unknownMigrations')]
     public function it_defers_to_core_for_unknown_migrations(string $name, ?string $table, bool $create): void
     {
-        $this->markTestIncomplete();
-
         $subject = resolve('migration.creator');
 
         $path = $subject->create($name, database_path('migrations'), $table, $create);
@@ -39,8 +37,6 @@ final class MigrationCreatorTest extends TestCase
     #[DataProvider('guessableMigrations')]
     public function it_makes_additional_guessable_migrations(string $name, ?string $table, bool $create): void
     {
-        $this->markTestIncomplete();
-
         $subject = resolve('migration.creator');
 
         $path = $subject->create($name, database_path('migrations'), $table, $create);
@@ -63,14 +59,15 @@ final class MigrationCreatorTest extends TestCase
     public static function guessableMigrations(): array
     {
         return [
-            [],
+            ['drop_users_table', null, false],
         ];
     }
 
     public static function unknownMigrations(): array
     {
         return [
-            [],
+            ['unknown_migration_action', null, false],
+            ['alter_whatever_table', null, false],
         ];
     }
 }

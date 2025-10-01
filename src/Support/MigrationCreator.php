@@ -8,8 +8,6 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
 {
     public function create($name, $path, $table = null, $create = false)
     {
-        dump(func_get_args());
-
         if (isset($table) && $create) {
             return parent::create($name, $path, $table, $create);
         }
@@ -20,7 +18,24 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
         }
 
         // TODO: it's guessable, populate the stub accordingly and write file
-        dd($table, $type, $data);
+        dump($table, $type, $data);
+
+        $stub = $this->getStubForType($type);
+        $path = $this->getPath($name, $path);
+        $this->files->ensureDirectoryExists(dirname($path));
+        $this->files->put($path, $this->populateStubForType($stub, $table, $type, $data));
+        $this->firePostCreateHooks($table, $path);
+
+        return $path;
+    }
+
+    private function getStubForType(mixed $type): string
+    {
+        $stub = $this->files->exists($customPath = $this->customStubPath.'/migration.stub')
+            ? $customPath
+            : $this->stubPath().'/migration.stub';
+
+        return $this->files->get($stub);
     }
 
     private function guessAction(string $name, ?string $table): array
@@ -44,5 +59,10 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
         }
 
         return [$table, null, []];
+    }
+
+    private function populateStubForType(string $stub, mixed $table, mixed $type, mixed $data): string
+    {
+        return parent::populateStub($stub, $table);
     }
 }
