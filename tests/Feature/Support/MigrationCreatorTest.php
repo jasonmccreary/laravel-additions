@@ -35,13 +35,13 @@ final class MigrationCreatorTest extends TestCase
 
     #[Test]
     #[DataProvider('guessableMigrations')]
-    public function it_makes_additional_guessable_migrations(string $name, ?string $table, bool $create): void
+    public function it_makes_additional_guessable_migrations(string $name, ?string $table, bool $create, string $fixture): void
     {
         $subject = resolve('migration.creator');
 
         $path = $subject->create($name, database_path('migrations'), $table, $create);
 
-        $this->assertFileEquals($this->migrationFixture($name), $path);
+        $this->assertFileEquals($this->migrationFixture($fixture), $path);
     }
 
     private function migrationFixture(string $name): string
@@ -59,7 +59,22 @@ final class MigrationCreatorTest extends TestCase
     public static function guessableMigrations(): array
     {
         return [
-            ['drop_users_table', null, false],
+            ['drop_users_table', null, false, 'drop_users_table'],
+            ['drop_users', null, false, 'drop_users_table'],
+            ['remove_users_table', null, false, 'drop_users_table'],
+            ['remove_users', null, false, 'drop_users_table'],
+            ['rename_users_to_people_table', null, false, 'rename_users_table'],
+            ['rename_users_to_people', null, false, 'rename_users_table'],
+            ['drop_email_verified_at_from_users_table', null, false, 'drop_email_verified_at_from_users'],
+            ['drop_email_verified_at_from_users', null, false, 'drop_email_verified_at_from_users'],
+            ['rename_stripe_id_to_transaction_id_in_users_table', null, false, 'rename_stripe_id_to_transaction_id_in_users'],
+            ['rename_stripe_id_to_transaction_id_in_users', null, false, 'rename_stripe_id_to_transaction_id_in_users'],
+            ['alter_status_in_users_table', null, false, 'change_status_in_users'],
+            ['alter_status_in_users', null, false, 'change_status_in_users'],
+            ['change_status_in_users_table', null, false, 'change_status_in_users'],
+            ['change_status_in_users', null, false, 'change_status_in_users'],
+            ['add_stripe_id_to_users_table', null, false, 'add_stripe_id_to_users'],
+            ['add_stripe_id_to_users', null, false, 'add_stripe_id_to_users'],
         ];
     }
 

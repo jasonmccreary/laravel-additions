@@ -10,6 +10,6 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropColumns('users', ['email_verified_at']);
     }
 };
