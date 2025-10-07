@@ -11,6 +11,12 @@ use Tests\TestCase;
  */
 final class MigrationCreatorTest extends TestCase
 {
+    protected function tearDown(): void
+    {
+        exec('vendor/bin/testbench package:purge-skeleton');
+        parent::tearDown();
+    }
+
     #[Test]
     #[DataProvider('defaultMigrations')]
     public function it_defers_to_core_for_create_migrations(string $name, ?string $table, bool $create): void

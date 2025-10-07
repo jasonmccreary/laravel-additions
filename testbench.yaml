@@ -20,6 +20,7 @@ workbench:
     components: false
     views: false
   build:
+    - purge-skeleton
     - asset-publish
     - create-sqlite-db
     - db-wipe
@@ -30,3 +31,6 @@ workbench:
     - from: storage
       to: workbench/storage
       reverse: true
+purge:
+  files:
+    - database/migrations/*
