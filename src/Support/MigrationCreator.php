@@ -26,6 +26,11 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
         return $path;
     }
 
+    private function extractValue(array $match, string $source): string
+    {
+        return Str::substr($source, $match[1], strlen($match[0]));
+    }
+
     private function getStubForType(mixed $type): string
     {
         $stub = match ($type) {
@@ -38,24 +43,26 @@ class MigrationCreator extends \Illuminate\Database\Migrations\MigrationCreator
 
     private function guessAction(string $name, ?string $table): array
     {
-        if (Str::endsWith($name, '_table')) {
-            $name = Str::substr($name, 0, -6);
+        // Before guessing, we'll ensure the name is delimited by
+        // underscores and remove any "_table" suffix for easier
+        // matching of the various supported migration types.
+        $normalized = str_replace('-', '_', $name);
+        if (Str::endsWith($normalized, '_table')) {
+            $normalized = Str::substr($normalized, 0, -6);
         }
 
-        // normalize dashes... unnormalize...
-
-        if (preg_match('/^(?:drop|remove)_(\w+)_from_(\w+)$/', $name, $matches)) {
-            return [$matches[2], 'remove-column', ['column' => $matches[1]]];
-        } elseif (preg_match('/^rename_(\w+)_to_(\w+)_in_(\w+)$/', $name, $matches)) {
-            return [$matches[3], 'rename-column', ['column' => $matches[1], 'to' => $matches[2]]];
-        } elseif (preg_match('/^add_(\w+)_to_(\w+)$/', $name, $matches)) {
-            return [$matches[2], 'add-column', ['column' => $matches[1]]];
-        } elseif (preg_match('/^(?:alter|change)_(\w+)_in_(\w+)$/', $name, $matches)) {
-            return [$matches[2], 'change-column', ['column' => $matches[1]]];
-        } elseif (preg_match('/^(?:drop|remove)_(\w+)$/', $name, $matches)) {
-            return [$matches[1], 'drop-table', []];
-        } elseif (preg_match('/^rename_(\w+)_to_(\w+)$/', $name, $matches)) {
-            return [$matches[1], 'rename-table', ['to' => $matches[2]]];
+        if (preg_match('/^(?:drop|remove)_(\w+)_from_(\w+)$/', $normalized, $matches, PREG_OFFSET_CAPTURE)) {
+            return [$this->extractValue($matches[2], $name), 'remove-column', ['column' => $this->extractValue($matches[1], $name)]];
+        } elseif (preg_match('/^rename_(\w+)_to_(\w+)_in_(\w+)$/', $normalized, $matches, PREG_OFFSET_CAPTURE)) {
+            return [$this->extractValue($matches[3], $name), 'rename-column', ['column' => $this->extractValue($matches[1], $name), 'to' => $this->extractValue($matches[2], $name)]];
+        } elseif (preg_match('/^add_(\w+)_to_(\w+)$/', $normalized, $matches, PREG_OFFSET_CAPTURE)) {
+            return [$this->extractValue($matches[2], $name), 'add-column', ['column' => $this->extractValue($matches[1], $name)]];
+        } elseif (preg_match('/^(?:alter|change)_(\w+)_in_(\w+)$/', $normalized, $matches, PREG_OFFSET_CAPTURE)) {
+            return [$this->extractValue($matches[2], $name), 'change-column', ['column' => $this->extractValue($matches[1], $name)]];
+        } elseif (preg_match('/^(?:drop|remove)_(\w+)$/', $normalized, $matches, PREG_OFFSET_CAPTURE)) {
+            return [$this->extractValue($matches[1], $name), 'drop-table', []];
+        } elseif (preg_match('/^rename_(\w+)_to_(\w+)$/', $normalized, $matches, PREG_OFFSET_CAPTURE)) {
+            return [$this->extractValue($matches[1], $name), 'rename-table', ['to' => $this->extractValue($matches[2], $name)]];
         }
 
         return [$table, null, []];

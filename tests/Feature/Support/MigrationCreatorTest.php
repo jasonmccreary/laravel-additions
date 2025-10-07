@@ -44,6 +44,16 @@ final class MigrationCreatorTest extends TestCase
         $this->assertFileEquals($this->migrationFixture($fixture), $path);
     }
 
+    #[Test]
+    public function it_handles_dashed_names(): void
+    {
+        $subject = resolve('migration.creator');
+
+        $path = $subject->create('rename_stripe-id_to_transaction-id_in_account-orders_table', database_path('migrations'));
+
+        $this->assertFileEquals($this->migrationFixture('dashed-names'), $path);
+    }
+
     private function migrationFixture(string $name): string
     {
         return $this->basePath('fixtures/migrations/'.$name.'.php');
