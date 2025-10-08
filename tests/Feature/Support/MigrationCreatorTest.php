@@ -13,7 +13,7 @@ final class MigrationCreatorTest extends TestCase
 {
     protected function tearDown(): void
     {
-        exec('vendor/bin/testbench package:purge-skeleton');
+        exec('composer run clear');
         parent::tearDown();
     }
 
