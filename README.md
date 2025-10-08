@@ -9,7 +9,7 @@ This package contains "additions" to Laravel I have used within my Laravel appli
 
 
 ## Requirements
-A Laravel application running Laravel 11 or higher. _Not running a stable version of Laravel?_ [Upgrade with Shift](https://laravelshift.com). 
+A Laravel application running Laravel 12 or higher. _Not running a supported version of Laravel?_ [Upgrade with Shift](https://laravelshift.com).
 
 
 ## Installation

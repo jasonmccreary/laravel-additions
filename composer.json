@@ -11,10 +11,10 @@
         "symfony/http-foundation": "^7.0"
     },
     "require-dev": {
-        "laravel/pint": "~1.20.0",
+        "laravel/pint": "~1.25.0",
         "mockery/mockery": "^1.4.4",
-        "orchestra/testbench": "^9.0|^10.0",
-        "phpunit/phpunit": "^11.5.3"
+        "orchestra/testbench": "^10.0",
+        "phpunit/phpunit": "^12.0"
     },
     "config": {
         "sort-packages": true
