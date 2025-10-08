@@ -122,7 +122,7 @@ Like any other policy method, `fallback` should return `true` if authorized, `fa
 
 **Note:** Due to the dynamic nature of this method, it does not support [guest users](https://laravel.com/docs/12.x/authorization#guest-users). If you require guest user support, you may implement the specific policy method.
 
-To use this behavior, simply add the `WithFallback` trait to your model class.
+To use this behavior, simply add the `WithFallback` trait to your policy class.
 
 ```php
 <?php
