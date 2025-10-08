@@ -148,7 +148,7 @@ class PostPolicy
 ### More `make:migration` guessing
 This improves the _guessing_ when running `make:migration` (attempted in [#20760](https://github.com/laravel/framework/pull/20760)) to generate a more complete migration based on the provided name.
 
-The following naming conventions may be used to make a fuller migration.
+The following naming conventions may be used:
 
 - **Drop a table**: `drop_users_table`, `remove_users_table`
 - **Rename a table**: `rename_users_to_accounts_table`, `rename_users_to_accounts_table`
@@ -157,28 +157,9 @@ The following naming conventions may be used to make a fuller migration.
 - **Change a column**: `change_status_in_orders_table`, `alter_status_in_orders_table`
 - **Add a column**: `add_status_to_orders_table`
 
-Using any of these naming conventions will make a migration that is mostly complete. Only the `change_` and `add_` column conventions may require adjustments for the column data type.
+Many of these will make a migration that is ready to run. The `change_` and `add_` column conventions may require adjustments to the column data type.
 
-For all conventions, the `_table` suffix is optional. For example, `drop_users` instead of `drop_users_table`. Also, delimiting with dashes (`-`) is supported. For example, `rename-stripe-id-to-transactions-id-in-orders-table`. **Note:** the dashes will be preserved for the database names.
-
-```php
-<?php
-
-namespace App\Policies;
-
-use Illuminate\Database\Eloquent\Model;
-use JMac\Additions\Traits\WithFallback;
-
-class PostPolicy
-{
-    use WithFallback;
-    
-    public function fallback(string $ability, User $user, ?Post $post, array $arguments): ?bool
-    {
-          return null;
-    }
-}
-```
+For all naming conventions, the `_table` suffix is optional. For example, `drop_users` instead of `drop_users_table`. Also, delimiting with dashes (`-`) is supported. For example, `rename-stripe-id-to-transactions-id-in-orders-table`. **Note:** the dashes will be preserved for the database names.
 
 
 ## Contributing
